@@ -24,6 +24,12 @@ package { 'ruby-dev':
   ensure => installed,
 }
 
+# required for neocomplete
+package { 'vim-nox':
+  require => Exec['apt-update'],
+  ensure => installed,
+}
+
 # required for nokigiri v 1.5.11
 package { 'libxslt-dev':
   require => Exec['apt-update'],
