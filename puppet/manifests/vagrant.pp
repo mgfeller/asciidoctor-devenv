@@ -74,3 +74,38 @@ file { '/home/vagrant/.vim/syntax/asciidoc.vim':
 }
 
 ssh_keygen { 'vagrant': }
+
+# nginx installation and configuration
+package { 'nginx':
+  ensure => present,
+  require => Exec['apt-update'],
+}
+
+file { '/home/vagrant/nginx':
+    owner  => vagrant,
+    group  => vagrant,    
+    mode => 755,
+    ensure => 'directory',
+    require => Package['nginx'],
+}
+
+file { '/home/vagrant/nginx/default':
+    owner  => vagrant,
+    group  => vagrant,    
+    mode => 664,
+    ensure => 'present',
+    source => 'puppet:///modules/nginx/default',
+    require => File['/home/vagrant/nginx'],
+}
+
+file { '/etc/nginx/sites-enabled/default':
+   ensure => 'link',
+   target => '/home/vagrant/nginx/default',
+   require => [File['/home/vagrant/nginx/default'], Package['nginx']],
+   notify => Service['nginx'],
+}
+
+service { 'nginx':
+  ensure => running,
+  require => Package['nginx']
+}
