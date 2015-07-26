@@ -3,8 +3,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.hostname = "awestruct"
 
-  config.vm.provision "shell", inline: "apt-get update"
-
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
     puppet.module_path = "puppet/modules"
