@@ -12,6 +12,19 @@ exec { 'apt-update':
   command => '/usr/bin/apt-get update'  
 }
 
+# timezone 
+file { '/etc/timezone':
+    ensure => present,
+    content => "Europe/Oslo\n",
+}
+
+exec { 'reconfigure-timezone':
+        user => root,
+        group => root,
+        command => '/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata',
+        require => [File['/etc/timezone'], Exec['apt-update']],
+}
+
 # needed for building native ruby gems
 package { 'g++':
   require => Exec['apt-update'],
