@@ -155,3 +155,7 @@ service { 'nginx':
   require => Package['nginx']
 }
 
+# install java
+# this installs openjdk-7-jdk on Trusty
+include java
+
