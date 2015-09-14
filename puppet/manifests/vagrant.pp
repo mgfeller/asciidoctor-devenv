@@ -1,5 +1,31 @@
+# install and configure git
 include git
 
+git::config { 'user.name':
+  value   => 'Michael Gfeller',
+  user    => 'vagrant',
+  require => Class['git'],
+}
+
+git::config { 'user.email':
+  value   => 'mgfeller@mgfeller.net',
+  user    => 'vagrant',
+  require => Class['git'],
+}
+
+git::config { 'core.autocrlf':
+  value   => 'input',
+  user    => 'vagrant',
+  require => Class['git'],
+}
+
+git::config { 'core.editor':
+  value   => 'vim',
+  user    => 'vagrant',
+  require => Class['git'],
+}
+
+# install spf13-vim
 exec { 'install spf13-vim':
     environment => ['HOME=/home/vagrant'],
     command => '/usr/bin/curl http://j.mp/spf13-vim3 -L -o - | sh',
@@ -128,3 +154,4 @@ service { 'nginx':
   ensure => running,
   require => Package['nginx']
 }
+
