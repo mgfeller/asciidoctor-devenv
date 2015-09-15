@@ -135,19 +135,19 @@ file { '/home/vagrant/nginx':
 }
 
 file { '/home/vagrant/nginx/default':
-    owner  => vagrant,
-    group  => vagrant,    
-    mode => 664,
-    ensure => 'present',
-    source => 'puppet:///modules/nginx/default',
-    require => File['/home/vagrant/nginx'],
+  owner  => vagrant,
+  group  => vagrant,    
+  mode => 664,
+  ensure => 'present',
+  source => 'puppet:///modules/nginx/default',
+  require => File['/home/vagrant/nginx'],
 }
 
 file { '/etc/nginx/sites-enabled/default':
-   ensure => 'link',
-   target => '/home/vagrant/nginx/default',
-   require => [File['/home/vagrant/nginx/default'], Package['nginx']],
-   notify => Service['nginx'],
+  ensure => 'link',
+  target => '/home/vagrant/nginx/default',
+  require => [File['/home/vagrant/nginx/default'], Package['nginx']],
+  notify => Service['nginx'],
 }
 
 service { 'nginx':
@@ -155,7 +155,42 @@ service { 'nginx':
   require => Package['nginx']
 }
 
+# bin folder
+file { '/home/vagrant/bin/':
+  owner  => vagrant,
+  group  => vagrant,    
+  mode => 755,
+  ensure => 'directory',
+}
+
 # install java
 # this installs openjdk-7-jdk on Trusty
 include java
 
+# install jbake
+file { '/home/vagrant/bin/jbake-2.4.0':
+  owner  => vagrant,
+  group  => vagrant,    
+  mode => 664,
+  ensure => 'present',
+  source => 'puppet:///modules/jbake/jbake-2.4.0/',
+  recurse => true,
+  require => File['/home/vagrant/bin/'],
+}
+
+# make jbake executable
+file { '/home/vagrant/bin/jbake-2.4.0/bin/jbake':
+  ensure  => 'present',
+  mode    => '0755',
+  owner    => 'vagrant',
+  require => File['/home/vagrant/bin/jbake-2.4.0'],
+}
+
+# shell configuration
+file { '/home/vagrant/.profile':
+  owner  => vagrant,
+  group  => vagrant,    
+  mode => 664,
+  ensure => 'present',
+  source => 'puppet:///modules/shell/.profile',
+}
