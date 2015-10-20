@@ -25,6 +25,12 @@ git::config { 'core.editor':
   require => Class['git'],
 }
 
+# install unzip
+package { 'unzip':
+  require => Exec['apt-update'],
+  ensure => installed,
+}
+
 # install spf13-vim
 exec { 'install spf13-vim':
     environment => ['HOME=/home/vagrant'],
