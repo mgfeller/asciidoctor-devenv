@@ -93,6 +93,12 @@ package { 'zlib1g-dev':
   ensure => installed,
 }
 
+# useful
+package { 'libxml2-utils':
+  require => Exec['apt-update'],
+  ensure => installed,
+}
+
 package { 'bundler':
     ensure   => 'installed',
     provider => 'gem',
