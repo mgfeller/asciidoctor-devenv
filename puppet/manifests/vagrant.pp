@@ -173,6 +173,25 @@ file { '/home/vagrant/bin/':
 # this installs openjdk-7-jdk on Trusty
 include java
 
+# install maven
+file { '/home/vagrant/bin/maven-3.3.3':
+  owner  => vagrant,
+  group  => vagrant,    
+  mode => 664,
+  ensure => 'present',
+  source => 'puppet:///modules/maven/maven-3.3.3/',
+  recurse => true,
+  require => File['/home/vagrant/bin/'],
+}
+
+# make mvn executable
+file { '/home/vagrant/bin/maven-3.3.3/bin/mvn':
+  ensure  => 'present',
+  mode    => '0755',
+  owner    => 'vagrant',
+  require => File['/home/vagrant/bin/maven-3.3.3'],
+}
+
 # install jbake
 file { '/home/vagrant/bin/jbake-2.4.0':
   owner  => vagrant,
