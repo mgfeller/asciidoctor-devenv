@@ -3,7 +3,12 @@ Vagrant.configure(2) do |config|
 
   config.vm.hostname = "awestruct"
   
-  config.vm.network "private_network", ip: "192.168.33.10"
+  # doesn't work on windows 10 with virtualbox 5.0.10:
+  # config.vm.network "private_network", ip: "192.168.33.10"
+  # using this as a workaround instead
+  # config.vm.network "public_network"
+  # or this (adjust IP as needed)
+  config.vm.network "public_network", ip: "192.168.1.166"
 
   config.vm.synced_folder "src/", "/work/src"
   

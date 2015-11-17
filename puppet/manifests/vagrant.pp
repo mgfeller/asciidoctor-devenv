@@ -201,6 +201,7 @@ file { '/home/vagrant/bin/maven-3.3.3/bin/mvn':
   ensure  => 'present',
   mode    => '0755',
   owner    => 'vagrant',
+  source => 'puppet:///modules/maven/maven-3.3.3/bin/mvn',
   require => File['/home/vagrant/bin/maven-3.3.3'],
 }
 
@@ -220,6 +221,7 @@ file { '/home/vagrant/bin/jbake-2.4.0/bin/jbake':
   ensure  => 'present',
   mode    => '0755',
   owner    => 'vagrant',
+  source  => 'puppet:///modules/jbake/jbake-2.4.0/bin/jbake',
   require => File['/home/vagrant/bin/jbake-2.4.0'],
 }
 
