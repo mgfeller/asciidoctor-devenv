@@ -3,7 +3,7 @@ server {
 	listen 80 default_server;
 	listen [::]:80 default_server ipv6only=on;
 
-	root /home/vagrant/jbake-project/target/jbake-www;
+	root /home/vagrant/website/target/jbake-www;
 	
 	index index.html index.htm;
 
