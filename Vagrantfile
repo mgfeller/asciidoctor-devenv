@@ -3,12 +3,16 @@ Vagrant.configure(2) do |config|
 
   config.vm.hostname = "adoc-devenv"
   
-  # doesn't work on windows 10 with virtualbox 5.0.10:
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  # doesn't work on windows 10 with virtualbox 5.0.10, unless you manually check the "VirtualBox NDIS6 Bridged Networking Driver" 
+  # in the network adapters property page after the adapter has been created. 
+  # In other words: running vagrant up for the first time will create the adapter, but fail to startup the
+  # virtual box. Find the created network adapter in the Windows 10 settings, select its properties, and select (check) 
+  # "VirtualBox NDIS6 Bridged Networking Driver". Run vagrant up again, this time the box should start normally.
+  config.vm.network "private_network", ip: "192.168.33.10"
   # using this as a workaround instead
   # config.vm.network "public_network"
   # or this (adjust IP as needed)
-  config.vm.network "public_network", ip: "192.168.1.166"
+  # config.vm.network "public_network", ip: "192.168.1.166"
 
   config.vm.synced_folder "src/", "/work/src"
   
