@@ -1,19 +1,22 @@
 Vagrant.configure(2) do |config|
+  # Base the project on Ubuntu (Trusty):
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.hostname = "adoc-devenv"
+ 
+  config.vm.network "private_network", ip: "192.168.33.10"
   
-  # doesn't work on windows 10 with virtualbox 5.0.10, unless you manually check the "VirtualBox NDIS6 Bridged Networking Driver" 
-  # in the network adapters property page after the adapter has been created. 
+  # Setting up the private  network doesn't work on windows 10 with Virtualbox 5.0.10, unless you manually 
+  # check the "VirtualBox NDIS6 Bridged Networking Driver" in the network adapters property page after the adapter has been created. 
   # In other words: running vagrant up for the first time will create the adapter, but fail to startup the
   # virtual box. Find the created network adapter in the Windows 10 settings, select its properties, and select (check) 
   # "VirtualBox NDIS6 Bridged Networking Driver". Run vagrant up again, this time the box should start normally.
-  config.vm.network "private_network", ip: "192.168.33.10"
-  # using this as a workaround instead
+  # As a workaround, a public network can be configured instead, using
   # config.vm.network "public_network"
-  # or this (adjust IP as needed)
+  # or with a specific IP address:
   # config.vm.network "public_network", ip: "192.168.1.166"
 
+  # Map the local folder containing possible sources to the folder /work/src in the box. 
   config.vm.synced_folder "src/", "/work/src"
   
   # Installation of "VirtualBox Guest Additions" (https://github.com/dotless-de/vagrant-vbguest):
@@ -23,6 +26,7 @@ Vagrant.configure(2) do |config|
   # config.vbguest.auto_update = true
   # config.vbguest.iso_path = 'http://download.virtualbox.org/virtualbox/5.0.18/VBoxGuestAdditions_5.0.18.iso'
 
+  # Configure provisioning with Puppet:
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
     puppet.module_path = "puppet/modules"
